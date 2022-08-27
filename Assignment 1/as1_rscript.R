@@ -48,12 +48,41 @@ beer_data2 = beer_data %>%
 beer_plot = ggplot(beer_data2, aes(x = beercons, fill = as.character(hightax))) +
   geom_density(alpha = 0.25)
 
-beer_plot + labs(title = "Density Plot for beer sales",
-                 x = "Beercons (gallons per capita)",
+beer_plot + labs(title = "Density Plot for Beer Sales",
+                 x = "Beer sales (gallons per capita)",
                  y = "Density",
                  fill = "Hightax value") +
             theme_bw() +
             theme(plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
                   axis.title = element_text(face = "italic", size = 10))
+
+# Question 4
+
+# Compute mean for beercons if hightax = 1 and hightax = 0
+
+beercons_ht1_mean = mean(beer_data2$beercons[beer_data2$hightax == 1])
+beercons_ht0_mean = mean(beer_data2$beercons[beer_data2$hightax == 0])
+
+beercons_ht1_sd = sd(beer_data2$beercons[beer_data2$hightax == 1])
+
+# Conduct hypothesis testing:
+t_stat = (beercons_ht1_mean - beercons_ht0_mean)/beercons_ht1_sd
+p_value = 2 * pnorm(-abs(t_stat))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
