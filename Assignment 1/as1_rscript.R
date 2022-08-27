@@ -14,3 +14,5 @@ tax_st = stargazer(beer_data,
 beercons_sd = sd(beer_data$beercons)
 beertax_sd = sd(beer_data$beertax)
 cigtax_sd = sd(beer_data$cigtax)
+
+#Change from Rstudio
