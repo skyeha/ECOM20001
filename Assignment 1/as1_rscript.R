@@ -118,7 +118,7 @@ summary(reg_2)
 # scatter plot for beercons and cigtax
 
 cons_cig_scatter = ggplot(beer_data2, aes(cigtax, beercons)) + geom_point(colour = 'orange')
-cons_cig_scatter + labs(title = "Scatter Plot for Cigarrette Tax Against Beer Sales",
+cons_cig_scatter = cons_cig_scatter + labs(title = "Scatter Plot for Cigarrette Tax Against Beer Sales",
                         y = "Beer sales (dollars per gallon)",
                         x = "Ciggarette tax (dollars per pack)") +
                     theme_bw() +
@@ -130,7 +130,7 @@ cons_cig_scatter + labs(title = "Scatter Plot for Cigarrette Tax Against Beer Sa
 # scatter plot for beertax and cigtax
 
 beer_cig_scatter = ggplot(beer_data2, aes(beertax, cigtax)) + geom_point(colour = "orange")
-beer_cig_scatter + labs(title = "Scatter Plot for Beer Tax Against Cigarrette Tax",
+beer_cig_scatter = beer_cig_scatter + labs(title = "Scatter Plot for Beer Tax Against Cigarrette Tax",
                         x = "Beer tax (dollars per gallon)",
                         y = "Cigarrette tax (dollars per pack)") +
                     theme_bw() +
