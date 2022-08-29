@@ -11,7 +11,7 @@ beer_data = read.csv("D:/Semester 2 2022/ECOM20001/Assignment 1/as1_beer.csv")
 tax_st = stargazer(beer_data,
                    summary.stat = c('n', 'mean', 'sd', 'median', 'min', 'max'),
                    type = 'text', title = 'Descriptive Statistic for Beer Dataset',
-                   out = 'beer_sumstat.txt')
+                   out = 'beer_sumstat.png')
 
 # Question 2
 # Compute sample means for each field
@@ -19,24 +19,24 @@ beercons_mean = mean(beer_data$beercons)
 beertax_mean = mean(beer_data$beertax)
 cigtax_mean = mean(beer_data$cigtax)
 
-# Compute sample standard deviation for each field
-beercons_sd = sd(beer_data$beercons)
-beertax_sd = sd(beer_data$beertax)
-cigtax_sd = sd(beer_data$cigtax)
+# Compute sample standard error for each field
+beercons_se = sd(beer_data$beercons)/sqrt(length(beer_data$beercons))
+beertax_se = sd(beer_data$beertax)/sqrt(length(beer_data$beertax))
+cigtax_se = sd(beer_data$cigtax)/sqrt(length(beer_data$cigtax))
 
 # Compute 95% Confidence Interval for each field 
 
 # Beercons
-beercons_95_low = beercons_mean - 1.96 * beercons_sd
-beercons_95_high = beercons_mean + 1.96 * beercons_sd
+beercons_95_low = beercons_mean - 1.96 * beercons_se
+beercons_95_high = beercons_mean + 1.96 * beercons_se
 
 # Beertax
-beertax_95_low = beertax_mean - 1.96 * beertax_sd
-beertax_95_high = beertax_mean + 1.96 * beertax_sd
+beertax_95_low = beertax_mean - 1.96 * beertax_se
+beertax_95_high = beertax_mean + 1.96 * beertax_se
 
 # Cigtax
-cigtax_95_low = cigtax_mean - 1.96 * cigtax_sd
-cigtax_95_high = cigtax_mean + 1.96 * cigtax_sd
+cigtax_95_low = cigtax_mean - 1.96 * cigtax_se
+cigtax_95_high = cigtax_mean + 1.96 * cigtax_se
 
 
 # Question 3
@@ -51,8 +51,9 @@ beer_density = ggplot(beer_data2, aes(x = beercons, fill = as.character(hightax)
 beer_density + labs(title = "Density Plot for Beer Sales",
                  x = "Beer sales (gallons per capita)",
                  y = "Density",
-                 fill = "Hightax value") +
+                 fill = "") +
             theme_bw() +
+            scale_fill_manual(labels = c("Beer tax < $0.440", "Beer tax >= $0.440"), values = c("Blue", "Red")) +
             theme(plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
                   axis.title = element_text(face = "italic", size = 10))
 
@@ -73,7 +74,9 @@ se_diff = sqrt((beercons_ht1_se**2 + beercons_ht0_se**2))
 
 # Conduct hypothesis testing:
 t_stat = (mean_diff - 0)/se_diff
-p_value = 2 * pnorm(-abs(t_stat)) # p-value: 0.799
+p_value = 2 * pnorm(-abs(t_stat)) 
+
+t.test(beer_data2$beercons[beer_data2$hightax == 1], beer_data2$beercons[beer_data2$hightax == 0])
 
 # 95% CI for mean diff
 mean_diff_upper = mean_diff + 1.96 * se_diff
@@ -98,13 +101,11 @@ beer_scatter + labs(title = "Scatter Plot for Beer Tax Against Beer Sales",
 
 cor_beertax_cons = cor(beer_data2$beertax, beer_data2$beercons)
 
-# => when beer tax increases, there is less beer consumption. Though, it does not support the findings in 4
-
 # Question 6
 
 # Single linear regression for beertax and beercons
 reg_1 = lm(beercons~beertax, beer_data2)
-summary(beer_reg)
+summary(reg_1)
 
 # Single linear regressions for cigtax and beercons, 
 reg_2 = lm(beercons~cigtax, beer_data2)
