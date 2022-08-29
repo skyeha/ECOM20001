@@ -145,4 +145,22 @@ summary(reg_before_1994)
 reg_after_1994 = lm(beercons[year > 1994]~beertax[year > 1994], beer_data2)
 summary(reg_after_1994)
 
+# Hypothesis testing for difference in beertax coefficients
+
+coef_diff = -0.43945 - (-0.06844)
+se_diff2 = sqrt(0.06201**2 + 0.09079**2)
+
+t_stat2 = (coef_diff - 0)/se_diff2
+p_value2 = 2*pnorm(-abs(t_stat2)) # = 0.000739545
+
+# since p value is less than 0.05, we reject the null hypothesis and there is statistically significant difference
+# between the coefficients of the two sets.
+
+
+
+
+
+
+
+
 
