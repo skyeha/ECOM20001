@@ -111,6 +111,16 @@ summary(reg_1)
 reg_2 = lm(beercons~cigtax, beer_data2)
 summary(reg_2)
 
+beertax_sd = sd(beer_data2$beertax)
+cigtax_sd = sd(beer_data2$cigtax)
+
+# Regression 1
+change_1 = -0.30387 * beertax_sd
+change_1
+
+# Regression 2
+change_2 = -0.0012506 * cigtax_sd
+change_2
 # B_0 = 1.443 and B_1 = -0.0012
 # sd(B_0) = 0.0094745 and sd(B_1) = 0.0001919
 
@@ -126,7 +136,7 @@ cons_cig_scatter = cons_cig_scatter + labs(title = "Scatter Plot for Cigarrette 
                     theme(plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
                           axis.title = element_text(face = "italic", size = 10)) +
                     geom_smooth(method = lm, se = FALSE, colour = "blue")
-
+cons_cig_scatter
 
 # scatter plot for beertax and cigtax
 
@@ -138,6 +148,8 @@ beer_cig_scatter = beer_cig_scatter + labs(title = "Scatter Plot for Beer Tax Ag
                     theme(plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
                           axis.title = element_text(face = "italic", size = 10)) +
                     geom_smooth(method = lm, se = FALSE, colour = "blue")
+
+beer_cig_scatter
 
 # QUestion 8
 reg_before_1994 = lm(beercons[year <= 1994]~beertax[year <= 1994], beer_data2)
