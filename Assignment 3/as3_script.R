@@ -312,15 +312,17 @@ regQ9 = lm(log_price ~ log_score + pinotnoir + cabernet + merlot + syrah + logSc
              logScore_cabernet + logScore_merlot + logScore_syrah +
              napa + bayarea + sonoma + scoast + carn + sierra + mendo + wash +
              d1991 + d1992 + d1993 + d1994 + d1995 + d1996 + d1997 + d1998 + d1999, data = wineData)
+covQ9 = vcovHC(regQ9, "HC1")
+seQ9 = sqrt(diag(covQ9))
+stargazer(regQ9, type ="text",
+          digits = 3,
+          se = list(seQ9),
+          omit = c('napa','bayarea','sonoma','scoast','carn','sierra','mendo','wash','othloc','d1990',
+                   'd1991','d1992','d1993','d1994','d1995','d1996','d1997','d1998','d1999'),
+          notes.label = 'The dummy variables for region and years are controlled for, though not visible',
+          out = "q9_reg.txt")
 
-# Helper code
-alias(reg2)
-alias(regQ9)
-x1 <- rnorm( 100 )
-x2 <- 2 * x1
-y <- rnorm( 100 )
-vif(lm( y ~ x1 + x2 ))
-alias(lm( y ~ x1 + x2 ))
+
 
 
 
