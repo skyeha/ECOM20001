@@ -6,7 +6,7 @@ library('dplyr')
 library('AER')
 
 #Load dataset
-wineData = read.csv("D:/Semester 2 2022/ECOM20001/Assignment 3/as3_wine.csv")
+wineData = read.csv("as3_wine.csv")
 
 #### Question 1
 #Scatter plot between price and score
@@ -142,6 +142,8 @@ FstatModel1 = FtestModel1[2,3]
 seModel1 = abs(model1Effect)/sqrt(FstatModel1)
 Model1CI95H = model1Effect + 1.96*seModel1
 Model1CI95L = model1Effect - 1.96*seModel1
+
+
 # partial effects = $7.411
 # standard error = $0.326
 # 95% CI = [6.773, 8.049]
@@ -162,6 +164,7 @@ FstatModel2 = FtestModel2[2,3]
 seModel2 = abs(model2Effect)/sqrt(FstatModel2)
 Model2CI95H = model2Effect + 1.96*seModel2
 Model2CI95L = model2Effect - 1.96*seModel2
+
 # partial effects = $7.395
 # standard error = $0.328
 # 95% CI = [6.753, 8.038]
@@ -183,8 +186,14 @@ FtestModel3 = linearHypothesis(reg3, c("5*score + 825*score2=0"), vcov = cov3)
 FstatModel3 = FtestModel2[2,3]
 
 seModel3 = abs(model3Effect)/sqrt(FstatModel3)
-Model2CI95H = model3Effect + 1.96*seModel3
-Model2CI95L = model3Effect - 1.96*seModel3
+Model3CI95H = model3Effect + 1.96*seModel3
+Model3CI95L = model3Effect - 1.96*seModel3
+
+model3Effect
+seModel3
+Model3CI95H
+Model3CI95L
+
 # partial effect = $4.847
 # standard error = 0.215
 # 95% CI = [4.425, 5.268]
@@ -208,9 +217,11 @@ FstatModel1 = FtestModel1[2,3]
 seModel1 = abs(model1Effect)/sqrt(FstatModel1)
 Model1CI95H = model1Effect + 1.96*seModel1
 Model1CI95L = model1Effect - 1.96*seModel1
+
+
 # partial effects = $17.930
-# standard error = $0.788
-# 95% CI = [17.143, 18.718]
+# standard error = $0.545
+# 95% CI = [16.8629, 18.997]
 
 # Model 2
 model2A = data.frame(score = 85, score2 = 85**2, pinotnoir = 0, cabernet = 0, merlot = 0, syrah = 0)
@@ -226,11 +237,12 @@ FtestModel2
 FstatModel2 = FtestModel2[2,3]
 
 seModel2 = abs(model2Effect)/sqrt(FstatModel2)
-Model2CI95H = model2Effect + seModel2
-Model2CI95L = model2Effect - seModel2
+Model2CI95H = model2Effect + 1.96 * seModel2
+Model2CI95L = model2Effect - 1.96 * seModel2
+
 # partial effects = $17.289
-# standard error = $0.767
-# 95% CI = [16.523, 18.056]
+# standard error = $0.535
+# 95% CI = [16.241, 18.338]
 
 # Model 3
 model3A = data.frame(score = 85, score2 = 85**2, pinotnoir = 0, cabernet = 0, merlot = 0, syrah = 0,
@@ -249,18 +261,23 @@ FtestModel3 = linearHypothesis(reg3, c("5*score + 875*score2=0"), vcov = cov3)
 FstatModel3 = FtestModel2[2,3]
 
 seModel3 = abs(model3Effect)/sqrt(FstatModel3)
-Model2CI95H = model3Effect + 1.96*seModel3
-Model2CI95L = model3Effect - 1.96*seModel3
+Model3CI95H = model3Effect + 1.96*seModel3
+Model3CI95L = model3Effect - 1.96*seModel3
+
+model3Effect
+seModel3
+Model3CI95H
+Model3CI95L
 # partial effect = $15.271
-# standard error = 0.677
-# 95% CI = [14.594, 15.948]
+# standard error = 0.472
+# 95% CI = [14.345, 16.197]
 
 ## Conclusion
 # The findings reflects that result from previous question that the model is indeed quadratic.
 # Going from score of 80 -> 85, we see a normal change which is represent by the line in the scatter plot.
 # Going from score of 85->90, however, we see a change that is more than double than that of the change going from
 # 80->85. This is due to the fact that the slope when going from 85->90 is much steeper than the slop going from 80->85.
-
+# negative slope ?
 #======================================================================#
 
 ### Question 7
@@ -288,9 +305,9 @@ stargazer(regQ7, type = "text",
 #======================================================================#
 
 ### Question 8
-tStat = 5.709 - 1/0.137
-pValue = 2*pnorm(-abs(tStat))
-pValue
+# tStat = 5.709 - 1/0.137
+# pValue = 2*pnorm(-abs(tStat))
+# pValue
 
 linearHypothesis(regQ7, c("log_score = 1"), vcov = covQ7)
 coeftest(regQ7, vcov = covQ7)
@@ -314,15 +331,39 @@ regQ9 = lm(log_price ~ log_score + pinotnoir + cabernet + merlot + syrah + logSc
              d1991 + d1992 + d1993 + d1994 + d1995 + d1996 + d1997 + d1998 + d1999, data = wineData)
 covQ9 = vcovHC(regQ9, "HC1")
 seQ9 = sqrt(diag(covQ9))
-stargazer(regQ9, type ="text",
+stargazer(regQ9, regQ7, type ="text",
           digits = 3,
-          se = list(seQ9),
+          se = list(seQ9, seQ7),
           omit = c('napa','bayarea','sonoma','scoast','carn','sierra','mendo','wash','othloc','d1990',
                    'd1991','d1992','d1993','d1994','d1995','d1996','d1997','d1998','d1999'),
           notes.label = 'The dummy variables for region and years are controlled for, though not visible',
-          out = "q9_reg.txt")
+          # label = c("regQ9", "regQ7"),
+          out = "q9_reg.html")
+
+# That is, the elasticities of price with respect to score for pitnoir , cabernet, merlot, and syrah
+# are -1.326, -0.098, -2.613, -2.610. However, the -0.098 coefficient on 
+# logScore_cabernet in column (2) of the table above is statistically insignificant,
+# which implies scores do not have statistically significantly 
+# different prices from having a wine type of cabernet.
+
+#======================================================================#
+
+### Question 10
+
+linearHypothesis(regQ9, c("logScore_pinotnoir = logScore_cabernet",
+                          "logScore_cabernet = logScore_merlot", 
+                         "logScore_merlot= logScore_syrah"), 
+                 vcov = vcovHC(regQ9, "HC1"))
 
 
+# null hypothesis: the elasticity of price with respect to score is the same for
+# the 4 wine types, pinotnoir, cabernet, merlot, syrah.
+# alt hypothesis: the elasticity of price with respect to score is different
+# for the 4 wine types
+# F-stat = 26.781 and p-value < 0.05.
+# At the 5% significance level, we reject the null hypothesis. That is we reject the fact that the elasticity of price with respect to score is the same for
+# the 4 wine types, pinotnoir, cabernet, merlot, syrah.
+# It's sampling distribution with an assumptions of a large random sample is a normal distribution
 
 
 
