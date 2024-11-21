@@ -1,2 +1,2 @@
 # ECOM20001
-This is the code used for the subject Econometrics 1 at The University of Melbourne
+This repo contains all assignments and their respective R code. These assigments are part of the course Ecomnometrics 1 (ECOM20001) at The University of Melbourne
